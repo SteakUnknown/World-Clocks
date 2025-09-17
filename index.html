@@ -4,64 +4,48 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>World Clocks — Digital + Analog</title>
+
+<!-- iPhone-style clock emoji favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='28' font-size='28'>🕒</text></svg>" type="image/svg+xml">
+
 <style>
 :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#06b6d4;}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef6;background:linear-gradient(180deg,#071322 0%, #071829 60%);scroll-behavior:smooth;}
-.warning {
-  width: 100%;
-  padding: 12px 16px;
-  background-color: rgba(250, 204, 21, 0.15);
-  color: #facc15;
-  font-weight: 600;
-  text-align: center;
-  font-size: 14px;
-  border-left: 4px solid #facc15;
-}
 header{display:flex;align-items:center;gap:16px;padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.03)}
 h1{font-size:18px;margin:0}
 .sub{color:var(--muted);font-size:13px}
+.warning {width: 100%; padding: 12px 16px; background-color: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600; text-align: center; font-size: 14px; border-left: 4px solid #facc15;}
 main{max-width:1200px;margin:20px auto;padding:18px}
-.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-input[type=search], select{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit;appearance:none;-webkit-appearance:none;-moz-appearance:none;}
-select, input[type="search"] {
-  background-color: #0b1220; 
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-select option {
-  background-color: #0b1220;
-  color: #ffffff;
-}
-input[type="search"]::placeholder {
-  color: #9aa4b2;
-}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:relative;}
+input[type=search], select{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:#1a2333;color:#fff;}
 button{background:var(--accent);color:#042026;border:0;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;transition:transform 0.15s ease,opacity 0.15s ease;}
 button:active{transform:scale(0.95);opacity:0.8;}
 .controls{display:flex;gap:8px;align-items:center}
 .small{font-size:13px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:16px;justify-items:center;}
-.card{background:linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:6px;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.4);cursor:pointer;transition:transform 0.15s ease,width 0.3s ease;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;justify-content:center;margin-top:20px;}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.4);cursor:pointer;transition:transform 0.15s ease,width 0.15s ease;justify-content:space-between;}
 .card:hover{transform:scale(1.04)}
-.tz-name{font-weight:700;text-align:center;font-size:18px;color:#ffffff}
-.city{font-size:14px;color:#cbd5e1;text-align:center}
+.tz-name {font-weight:700;text-align:center;font-size:16px;color:#ffffff;word-wrap: break-word;overflow: hidden;text-overflow: ellipsis;max-width: 100%;}
+.city {font-size:13px;color:#cbd5e1;text-align:center;word-wrap: break-word;overflow: hidden;text-overflow: ellipsis;max-width: 100%;}
 .gmt{font-size:12px;color:#9aa4b2;text-align:center}
 .digital{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:rgba(255,255,255,0.15);padding:10px 12px;border-radius:12px;font-size:16px;text-align:center;color:#ffffff}
-canvas.analog{width:220px;height:220px;display:block;margin:8px auto;border-radius:50%;background:rgba(255,255,255,0.25);box-shadow:0 0 16px rgba(0,0,0,0.7)}
-.footer{margin-top:22px;color:var(--muted);font-size:13px;text-align:center}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;z-index:1000;display:none;overflow:auto;}
-.modal-content{background:var(--card);padding:24px;border-radius:22px;max-width:480px;width:90%;text-align:center;position:relative;}
-.modal-content canvas{width:300px;height:300px;margin:16px auto;border-radius:50%;}
+canvas.analog{width:200px;height:200px;display:block;margin:8px auto;border-radius:50%;background:rgba(255,255,255,0.25);box-shadow:0 0 16px rgba(0,0,0,0.7)}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;justify-content:center;align-items:center;z-index:1000;}
+.modal-content{background:var(--card);padding:24px;border-radius:22px;max-width:400px;width:90%;text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;}
+.modal-content canvas{width:100%;height:auto;max-width:300px;max-height:300px;border-radius:50%;}
 .close-btn{position:absolute;top:10px;right:10px;background:var(--accent);border:none;padding:8px 12px;border-radius:12px;color:#042026;cursor:pointer;font-weight:700;transition:transform 0.15s ease,opacity 0.15s ease;}
 .close-btn:active{transform:scale(0.95);opacity:0.8;}
+
+/* Suggestions */
+#suggestions {position:absolute;top:38px;left:0;right:0;z-index:100;}
+#suggestions ul {position:absolute;top:0;left:0;right:0;background:#1a2333;border:1px solid rgba(255,255,255,0.1);border-radius:8px;max-height:200px;overflow-y:auto;list-style:none;margin:0;padding:0;}
+#suggestions li {padding:8px 12px;cursor:pointer;color:#fff;}
+#suggestions li:hover {background-color: rgba(6,182,212,0.3);}
 </style>
 </head>
 <body>
-
-<div class="warning">
-  ⚠️ Warning: Displaying many clocks may be CPU-intensive and could be laggy on low-end devices.
-</div>
-
+<div class="warning">⚠️ This clock wall can be heavy on the CPU, especially on low-end devices.</div>
 <header>
 <div>
 <h1>World Clocks — Digital + Analog</h1>
@@ -69,10 +53,10 @@ canvas.analog{width:220px;height:220px;display:block;margin:8px auto;border-radi
 </div>
 <div style="margin-left:auto" class="sub">Local time: <span id="localTime">--:--:--</span></div>
 </header>
-
 <main>
 <div class="toolbar">
-<input id="query" type="search" placeholder="Search by city or country" />
+<input id="query" type="search" placeholder="Search by city or country" autocomplete="off"/>
+<div id="suggestions"></div>
 <select id="regionFilter"><option value="all">All regions</option></select>
 <div class="controls">
 <label class="small">Show <select id="limit"><option value="24">24</option><option value="48">48</option><option value="96">96</option><option value="9999">All</option></select></label>
@@ -82,7 +66,6 @@ canvas.analog{width:220px;height:220px;display:block;margin:8px auto;border-radi
 </div>
 <div id="grid" class="grid"></div>
 </main>
-
 <div id="modal" class="modal">
 <div class="modal-content">
 <button class="close-btn">X</button>
@@ -95,6 +78,8 @@ canvas.analog{width:220px;height:220px;display:block;margin:8px auto;border-radi
 </div>
 
 <script>
+// JS code: full clocks, modal, suggestions, URL updates
+
 const grid=document.getElementById('grid');
 const localTimeSpan=document.getElementById('localTime');
 const modal=document.getElementById('modal');
@@ -102,87 +87,54 @@ const modalName=document.getElementById('modal-name');
 const modalCity=document.getElementById('modal-city');
 const modalClock=document.getElementById('modal-clock');
 const modalDigital=document.getElementById('modal-digital');
+const modalGMT=document.getElementById('modal-gmt');
 const closeBtn=document.querySelector('.close-btn');
-
 const queryInput=document.getElementById('query');
+const suggestionsContainer=document.getElementById('suggestions');
+const regionFilter=document.getElementById('regionFilter');
 const limitSelect=document.getElementById('limit');
 const hourFormatSelect=document.getElementById('hourFormat');
 const refreshBtn=document.getElementById('refresh');
-const regionFilter=document.getElementById('regionFilter');
 
-const tzList=typeof Intl.supportedValuesOf==='function'
-  ? Intl.supportedValuesOf('timeZone')
-  : ['Pacific/Midway','Pacific/Honolulu','America/Los_Angeles','America/New_York','Europe/London','Europe/Berlin','Asia/Tokyo','Australia/Sydney','Etc/UTC'];
+const tzList=(typeof Intl.supportedValuesOf==='function')?Intl.supportedValuesOf('timeZone'):['Pacific/Midway','Pacific/Honolulu','America/Los_Angeles','America/New_York','Europe/London','Europe/Berlin','Asia/Tokyo','Australia/Sydney','Etc/UTC'];
+const tzCountryMap={"Pacific/Midway":"USA","Pacific/Honolulu":"USA","America/Los_Angeles":"USA","America/New_York":"USA","Europe/London":"UK","Europe/Berlin":"Germany","Asia/Tokyo":"Japan","Australia/Sydney":"Australia","Etc/UTC":"UTC"};
 
-const zones=tzList.map(tz=>({tz,label:tz.split('/').slice(1).join(' ').replace(/_/g,' ')||tz}));
+const zones=tzList.map(tz=>({
+  tz: tz.replace(/_/g,' '),
+  label: tz.split('/').slice(1).join(' ').replace(/_/g,' ')||tz,
+  country: tzCountryMap[tz]||""
+}));
 
-const regions=Array.from(new Set(zones.map(z=>z.tz.split('/')[0]))).sort();
-regions.forEach(r=>{
-  const opt=document.createElement('option');
-  opt.value=r;
-  opt.textContent=r;
-  regionFilter.appendChild(opt);
+[...new Set(zones.map(z=>z.tz.split('/')[0]))].sort().forEach(region=>{
+  const opt=document.createElement('option'); opt.value=region; opt.textContent=region.replace(/_/g,' '); regionFilter.appendChild(opt);
 });
 
 function getTimeParts(tz){
   const now=new Date();
   try{
-    const parts=new Intl.DateTimeFormat('en-US',{
-      timeZone:tz,
-      hour:'2-digit',
-      minute:'2-digit',
-      second:'2-digit',
-      hour12:false
-    }).formatToParts(now);
-    return {
-      hh:+parts.find(p=>p.type==='hour').value,
-      mm:+parts.find(p=>p.type==='minute').value,
-      ss:+parts.find(p=>p.type==='second').value
-    };
-  }catch{
-    return {hh:now.getUTCHours(),mm:now.getUTCMinutes(),ss:now.getUTCSeconds()};
-  }
+    const f=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    const parts=f.formatToParts(now);
+    return {hh:+parts.find(p=>p.type==='hour').value, mm:+parts.find(p=>p.type==='minute').value, ss:+parts.find(p=>p.type==='second').value};
+  }catch{return {hh:now.getUTCHours(), mm:now.getUTCMinutes(), ss:now.getUTCSeconds()};}
 }
 
-function drawHand(ctx,angle,len,width,color){
-  ctx.beginPath();
-  ctx.moveTo(0,0);
-  ctx.lineTo(Math.sin(angle)*len,-Math.cos(angle)*len);
-  ctx.lineWidth=width;
-  ctx.lineCap='round';
-  ctx.strokeStyle=color;
-  ctx.stroke();
-}
-
+function drawHand(ctx,angle,len,width,color){ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.sin(angle)*len,-Math.cos(angle)*len);ctx.lineWidth=width;ctx.lineCap='round';ctx.strokeStyle=color;ctx.stroke();}
 function drawClock(ctx,hh,mm,ss){
   if(!ctx) return;
-  const {width,height}=ctx.canvas;
-  const size=Math.min(width,height);
-  const cx=size/2,cy=size/2,r=size*0.45;
-  ctx.clearRect(0,0,width,height);
-  ctx.save();
-  ctx.translate(cx,cy);
+  const size=Math.min(ctx.canvas.width,ctx.canvas.height); const cx=size/2,cy=size/2,r=size*0.45;
+  ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height); ctx.save(); ctx.translate(cx,cy);
   ctx.beginPath(); ctx.arc(0,0,r,0,2*Math.PI); ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=4; ctx.stroke();
-  for(let i=0;i<60;i++){
-    const angle=i*Math.PI/30,len=i%5===0?12:6;
-    ctx.beginPath(); ctx.moveTo(Math.sin(angle)*(r-len),-Math.cos(angle)*(r-len));
-    ctx.lineTo(Math.sin(angle)*r,-Math.cos(angle)*r);
-    ctx.lineWidth=i%5===0?3:1.5; ctx.strokeStyle='rgba(255,255,255,0.7)'; ctx.stroke();
-  }
-  drawHand(ctx,(hh%12+mm/60)*Math.PI/6,r*0.6,6,'#fff');
-  drawHand(ctx,(mm+ss/60)*Math.PI/30,r*0.8,4,'#fff');
-  drawHand(ctx,ss*Math.PI/30,r*0.85,2,'#f00');
-  ctx.beginPath(); ctx.arc(0,0,5,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill();
-  ctx.restore();
+  for(let i=0;i<60;i++){const angle=i*Math.PI/30,len=i%5===0?12:6; ctx.beginPath(); ctx.moveTo(Math.sin(angle)*(r-len),-Math.cos(angle)*(r-len)); ctx.lineTo(Math.sin(angle)*r,-Math.cos(angle)*r); ctx.lineWidth=i%5===0?3:1.5; ctx.strokeStyle='rgba(255,255,255,0.7)'; ctx.stroke();}
+  drawHand(ctx,(hh%12+mm/60)*Math.PI/6,r*0.6,6,'#fff'); drawHand(ctx,(mm+ss/60)*Math.PI/30,r*0.8,4,'#fff'); drawHand(ctx,ss*Math.PI/30,r*0.85,2,'#f00');
+  ctx.beginPath(); ctx.arc(0,0,5,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill(); ctx.restore();
 }
 
 function createCard(zone){
   const card=document.createElement('div'); card.className='card';
-  card.innerHTML=`<div class="tz-name">${zone.tz}</div><div class="city">${zone.label}</div><canvas class="analog" width="220" height="220"></canvas><div class="digital"></div>`;
+  card.innerHTML=`<div class="tz-name">${zone.tz}</div><div class="city">${zone.label}</div><canvas class="analog" width="200" height="200"></canvas><div class="digital"></div>`;
   grid.appendChild(card);
-  const canvas=card.querySelector('canvas');
-  const digital=card.querySelector('.digital');
+  const canvas=card.querySelector('canvas'); const digital=card.querySelector('.digital');
   card.addEventListener('click',()=>openModal(zone));
   return {zone,canvas,digital,card};
 }
@@ -190,94 +142,78 @@ function createCard(zone){
 let cards=zones.map(createCard);
 
 function formatTime(hh,mm,ss){
-  const format=hourFormatSelect.value;
-  if(format==='12'){
-    const period=hh>=12?'PM':'AM';
-    const hour=hh%12||12;
-    return `${hour.toString().padStart(2,'0')}:${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')} ${period}`;
-  }
+  if(hourFormatSelect.value==='12'){const period=hh>=12?'PM':'AM';const hour=hh%12||12; return `${hour.toString().padStart(2,'0')}:${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')} ${period}`;}
   return `${hh.toString().padStart(2,'0')}:${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`;
 }
 
-function updateAll(){
+// GMT offset
+function getGMTOffset(tz){
   const now=new Date();
-  localTimeSpan.textContent=now.toLocaleTimeString();
-
-  let filteredCards=cards;
-  const query=queryInput.value.toLowerCase();
-  if(query) filteredCards=filteredCards.filter(c=>c.zone.tz.toLowerCase().includes(query)||c.zone.label.toLowerCase().includes(query));
-
-  const selectedRegion=regionFilter.value;
-  if(selectedRegion!=='all') filteredCards=filteredCards.filter(c=>c.zone.tz.split('/')[0]===selectedRegion);
-
-  const limit=parseInt(limitSelect.value,10);
-  filteredCards=filteredCards.slice(0,limit);
-
-  cards.forEach(c=>c.card.style.display=filteredCards.includes(c)?'flex':'none');
-
-  filteredCards.forEach(c=>{
-    if(!c.canvas) return;
-    const ctx=c.canvas.getContext('2d');
-    const t=getTimeParts(c.zone.tz);
-    drawClock(ctx,t.hh,t.mm,t.ss);
-    c.digital.textContent=formatTime(t.hh,t.mm,t.ss);
-  });
-
-  if(modal.style.display==='flex' && modal.zone) updateModal(modal.zone);
+  const utcDate=new Date(now.toLocaleString('en-US',{timeZone:'UTC'}));
+  const tzDate=new Date(now.toLocaleString('en-US',{timeZone:tz}));
+  return Math.round((tzDate.getTime()-utcDate.getTime())/3600000);
 }
 
 function openModal(zone){
-  modal.style.display='flex';
-  modal.zone=zone;
-  modalName.textContent=zone.tz;
-  modalCity.textContent=zone.label;
+  modal.style.display='flex'; 
+  modal.zone = zone;
+  modalName.textContent = zone.label||zone.tz;
+  modalCity.textContent = zone.tz;
+  modalGMT.textContent = `GMT ${getGMTOffset(zone.tz)>=0?'+':''}${getGMTOffset(zone.tz)}`;
+  modalClock.width = modalClock.clientWidth;
+  modalClock.height = modalClock.clientWidth;
   updateModal(zone);
-}
-
-function updateModal(zone){
-  const t=getTimeParts(zone.tz);
-  const ctx=modalClock.getContext('2d');
-  drawClock(ctx,t.hh,t.mm,t.ss);
-  modalDigital.textContent=formatTime(t.hh,t.mm,t.ss);
-}
-
-function saveSettings(){
-  localStorage.setItem('wc_query',queryInput.value);
-  localStorage.setItem('wc_region',regionFilter.value);
-  localStorage.setItem('wc_limit',limitSelect.value);
-  localStorage.setItem('wc_hourFormat',hourFormatSelect.value);
-}
-
-function loadSettings(){
-  if(localStorage.getItem('wc_query')) queryInput.value=localStorage.getItem('wc_query');
-  if(localStorage.getItem('wc_region')) regionFilter.value=localStorage.getItem('wc_region');
-  if(localStorage.getItem('wc_limit')) limitSelect.value=localStorage.getItem('wc_limit');
-  if(localStorage.getItem('wc_hourFormat')) hourFormatSelect.value=localStorage.getItem('wc_hourFormat');
-}
-
-// Fixed URL order: search= first, region= second
-function updateURL(){
-  const params = new URLSearchParams();
-  params.set('search', queryInput.value || '');
-  params.set('region', regionFilter.value || 'all');
-  window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
-}
-
-function loadFromURL(){
+  // Update URL with selected clock
   const params = new URLSearchParams(window.location.search);
-  queryInput.value = params.get('search') || '';
-  regionFilter.value = params.get('region') || 'all';
+  params.set('clock', zone.tz.replace(/\s/g,'_'));
+  window.history.replaceState({}, '', window.location.pathname + '?' + params.toString());
 }
 
-closeBtn.addEventListener('click',()=>modal.style.display='none');
-queryInput.addEventListener('input',()=>{ updateAll(); saveSettings(); updateURL(); });
-regionFilter.addEventListener('change',()=>{ updateAll(); saveSettings(); updateURL(); });
-limitSelect.addEventListener('change',()=>{ updateAll(); saveSettings(); });
-hourFormatSelect.addEventListener('change',()=>{ updateAll(); saveSettings(); });
-refreshBtn.addEventListener('click',()=>{ updateAll(); saveSettings(); });
+function updateModal(zone){const t=getTimeParts(zone.tz); const ctx=modalClock.getContext('2d'); drawClock(ctx,t.hh,t.mm,t.ss); modalDigital.textContent=formatTime(t.hh,t.mm,t.ss);}
 
-loadFromURL();
-loadSettings();
+function updateAll(){
+  const now=new Date(); localTimeSpan.textContent=formatTime(now.getHours(),now.getMinutes(),now.getSeconds());
+  let filteredCards=cards;
+  const query=queryInput.value.toLowerCase();
+  if(query) filteredCards=filteredCards.filter(c=>c.zone.tz.toLowerCase().includes(query)||c.zone.label.toLowerCase().includes(query)||c.zone.country.toLowerCase().includes(query));
+  const selectedRegion=regionFilter.value; if(selectedRegion!=='all') filteredCards=filteredCards.filter(c=>c.zone.tz.split('/')[0]===selectedRegion);
+  const limit=parseInt(limitSelect.value,10); filteredCards=filteredCards.slice(0,limit);
+  cards.forEach(c=>c.card.style.display=filteredCards.includes(c)?'flex':'none');
+  filteredCards.forEach(c=>{const ctx=c.canvas.getContext('2d'); const t=getTimeParts(c.zone.tz); drawClock(ctx,t.hh,t.mm,t.ss); c.digital.textContent=formatTime(t.hh,t.mm,t.ss);});
+  if(modal.style.display==='flex' && modal.zone) updateModal(modal.zone);
+}
+
+closeBtn.addEventListener('click',()=>{
+  modal.style.display='none';
+  const params = new URLSearchParams(window.location.search);
+  params.delete('clock');
+  window.history.replaceState({}, '', window.location.pathname + '?' + params.toString());
+});
+
+// Suggestions
+queryInput.addEventListener('input', () => {
+  const value = queryInput.value.toLowerCase().trim();
+  suggestionsContainer.innerHTML = '';
+  if (!value) return;
+  const matches = zones.filter(z => z.tz.toLowerCase().includes(value) || z.label.toLowerCase().includes(value) || z.country.toLowerCase().includes(value)).slice(0,5);
+  if(matches.length===0) return;
+  const ul=document.createElement('ul');
+  matches.forEach(m=>{
+    const li=document.createElement('li');
+    li.textContent=`${m.label} (${m.country})`;
+    li.addEventListener('click',()=>{queryInput.value=m.label; updateAll(); suggestionsContainer.innerHTML='';});
+    ul.appendChild(li);
+  });
+  suggestionsContainer.appendChild(ul);
+});
+
+document.addEventListener('click', e=>{if(!suggestionsContainer.contains(e.target)&&e.target!==queryInput) suggestionsContainer.innerHTML='';});
+
+regionFilter.addEventListener('change',updateAll);
+limitSelect.addEventListener('change',updateAll);
+hourFormatSelect.addEventListener('change',updateAll);
+refreshBtn.addEventListener('click',updateAll);
+
 updateAll();
 setInterval(updateAll,1000);
 </script>
